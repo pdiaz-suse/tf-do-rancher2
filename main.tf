@@ -23,6 +23,10 @@ variable "rancher_args" {
   default = ""
 }
 
+variable "rancher_registry" {
+  default = ""
+}
+
 variable "count_agent_all_nodes" {
   default = "3"
 }
@@ -177,6 +181,7 @@ resource "digitalocean_droplet" "rancherserver" {
     docker_version_server   = var.docker_version_server
     docker_root             = var.docker_root
     rancher_version         = var.rancher_version
+    rancher_registry        = var.rancher_registry
     rancher_args            = var.rancher_args
     k8s_version             = var.k8s_version
     k8s_rke2_version        = var.k8s_rke2_version
@@ -199,6 +204,7 @@ resource "digitalocean_droplet" "rancheragent-all" {
     cluster_name         = var.cluster_name
     docker_version_agent = var.docker_version_agent
     docker_root          = var.docker_root
+    rancher_registry     = var.rancher_registry
     rancher_version      = var.rancher_version
     server_address       = digitalocean_droplet.rancherserver[0].ipv4_address
   })
@@ -218,6 +224,7 @@ resource "digitalocean_droplet" "rancheragent-etcd" {
     cluster_name         = var.cluster_name
     docker_version_agent = var.docker_version_agent
     docker_root          = var.docker_root
+    rancher_registry     = var.rancher_registry
     rancher_version      = var.rancher_version
     server_address       = digitalocean_droplet.rancherserver[0].ipv4_address
   })
@@ -237,6 +244,7 @@ resource "digitalocean_droplet" "rancheragent-controlplane" {
     cluster_name         = var.cluster_name
     docker_version_agent = var.docker_version_agent
     docker_root          = var.docker_root
+    rancher_registry     = var.rancher_registry
     rancher_version      = var.rancher_version
     server_address       = digitalocean_droplet.rancherserver[0].ipv4_address
   })
@@ -256,6 +264,7 @@ resource "digitalocean_droplet" "rancheragent-worker" {
     cluster_name         = var.cluster_name
     docker_version_agent = var.docker_version_agent
     docker_root          = var.docker_root
+    rancher_registry     = var.rancher_registry
     rancher_version      = var.rancher_version
     server_address       = digitalocean_droplet.rancherserver[0].ipv4_address
   })

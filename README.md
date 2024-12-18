@@ -21,6 +21,10 @@ This Terraform setup will:
 - Start `count_rke2_agent_controlplane_nodes` amount of droplets and add them to the custom cluster with controlplane role
 - Start `count_rke2_agent_worker_nodes` amount of droplets and add them to the custom cluster with worker role
 
+## Registry configuration
+
+The rancher and rancher-agent images will by default be pulled from Docker Hub. You can specify an alternative registry for these two images with the `rancher_registry` option. If `rancher_registry` is specified, but the images cannot be successfully pulled from the registry, then it will fall back to Docker Hub.
+
 ## Other options
 
 All available options/variables are described in [terraform.tfvars.example](https://github.com/superseb/tf-do-rancher2/blob/master/terraform.tfvars.example).

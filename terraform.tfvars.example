@@ -7,6 +7,9 @@ admin_password = "adminadminadmin"
 # Resources will be prefixed with this to avoid clashing names
 prefix = "myname"
 
+# registry for the rancher and rancher-agent images. If blank or the image cannot be pulled from the registry, it will fall back to Docker Hub
+rancher_registry = ""
+
 # rancher/rancher image tag to use
 rancher_version = "v2.7.9"
 
