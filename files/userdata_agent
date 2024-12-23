@@ -20,7 +20,14 @@ if [ -n "${docker_root}" ]; then
   fi
 fi
 
-for image in $curlimage $jqimage "rancher/rancher-agent:${rancher_version}"; do
+agentimage="rancher/rancher-agent:${rancher_version}"
+if [ -n "${rancher_registry}" ]; then
+  if docker pull "${rancher_registry}/rancher/rancher-agent:${rancher_version}"; then
+    agentimage="${rancher_registry}/rancher/rancher-agent:${rancher_version}"
+  fi
+fi
+
+for image in $curlimage $jqimage $agentimage; do
   until docker inspect $image > /dev/null 2>&1; do
     docker pull $image
     sleep 2
