@@ -26,6 +26,10 @@ variable "count_agent_all_nodes" {
   default = "3"
 }
 
+variable "count_agent_master_nodes" {
+  default = "0"
+}
+
 variable "count_agent_etcd_nodes" {
   default = "0"
 }
@@ -43,6 +47,10 @@ variable "count_tools_nodes" {
 }
 
 variable "count_rke2_agent_all_nodes" {
+  default = "0"
+}
+
+variable "count_rke2_agent_master_nodes" {
   default = "0"
 }
 
@@ -83,6 +91,10 @@ variable "size" {
 }
 
 variable "all_size" {
+  default = "s-4vcpu-8gb"
+}
+
+variable "master_size" {
   default = "s-4vcpu-8gb"
 }
 

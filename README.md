@@ -14,9 +14,11 @@ This Terraform setup will:
 - Create an ssh_config file in the terraform module directory for connecting to the droplets
 
 ### Optional adding nodes per role
+- Start `count_agent_master_nodes` amount of droplets and add them to the custom cluster with etcd and controlplane roles
 - Start `count_agent_etcd_nodes` amount of droplets and add them to the custom cluster with etcd role
 - Start `count_agent_controlplane_nodes` amount of droplets and add them to the custom cluster with controlplane role
 - Start `count_agent_worker_nodes` amount of droplets and add them to the custom cluster with worker role
+- Start `count_rke2_agent_master_nodes` amount of droplets and add them to the custom cluster with etcd and controlplane roles
 - Start `count_rke2_agent_etcd_nodes` amount of droplets and add them to the custom cluster with etcd role
 - Start `count_rke2_agent_controlplane_nodes` amount of droplets and add them to the custom cluster with controlplane role
 - Start `count_rke2_agent_worker_nodes` amount of droplets and add them to the custom cluster with worker role
