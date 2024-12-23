@@ -3,162 +3,6 @@ provider "digitalocean" {
   token = var.do_token
 }
 
-variable "do_token" {
-  default = "xxx"
-}
-
-variable "prefix" {
-  default = "yourname"
-}
-
-variable "rancher_version" {
-  default = "v2.7.9"
-}
-
-variable "audit_level" {
-  default = 0
-}
-
-variable "rancher_args" {
-  default = ""
-}
-
-variable "rancher_registry" {
-  default = ""
-}
-
-variable "count_agent_all_nodes" {
-  default = "3"
-}
-
-variable "count_agent_etcd_nodes" {
-  default = "0"
-}
-
-variable "count_agent_controlplane_nodes" {
-  default = "0"
-}
-
-variable "count_agent_worker_nodes" {
-  default = "0"
-}
-
-variable "count_tools_nodes" {
-  default = "0"
-}
-
-variable "count_rke2_agent_all_nodes" {
-  default = "0"
-}
-
-variable "count_rke2_agent_etcd_nodes" {
-  default = "0"
-}
-
-variable "count_rke2_agent_controlplane_nodes" {
-  default = "0"
-}
-
-variable "count_rke2_agent_worker_nodes" {
-  default = "0"
-}
-
-variable "admin_password" {
-  default = "admin"
-}
-
-variable "cluster_name" {
-  default = "custom"
-}
-
-variable "cluster_rke2_name" {
-  default = "rke2custom"
-}
-
-variable "region_server" {
-  default = "lon1"
-}
-
-variable "region_agent" {
-  default = "lon1"
-}
-
-variable "size" {
-  default = "s-4vcpu-8gb"
-}
-
-variable "all_size" {
-  default = "s-4vcpu-8gb"
-}
-
-variable "etcd_size" {
-  default = "s-4vcpu-8gb"
-}
-
-variable "controlplane_size" {
-  default = "s-4vcpu-8gb"
-}
-
-variable "worker_size" {
-  default = "s-4vcpu-8gb"
-}
-
-variable "tools_size" {
-  default = "s-4vcpu-8gb"
-}
-
-variable "docker_version_server" {
-  default = "24.0"
-}
-
-variable "docker_version_agent" {
-  default = "24.0"
-}
-
-variable "docker_root" {
-  default = ""
-}
-
-variable "k8s_version" {
-  default = ""
-}
-
-variable "k8s_rke2_version" {
-  default = ""
-}
-
-variable "image_server" {
-  default = "ubuntu-22-04-x64"
-}
-
-variable "image_agent" {
-  default = "ubuntu-22-04-x64"
-}
-
-variable "image_tools" {
-  default = "ubuntu-22-04-x64"
-}
-
-variable "user_server" {
-  default = "root"
-}
-
-variable "user_agent" {
-  default = "root"
-}
-
-variable "user_tools" {
-  default = "root"
-}
-
-variable "kernel_nf_conntrack_max" {
-  default = "131072"
-}
-
-variable "ssh_keys" {
-  default = []
-}
-
 data "digitalocean_account" "do-account" {
 }
 
@@ -199,6 +43,26 @@ resource "digitalocean_droplet" "rancheragent-all" {
   vpc_uuid = digitalocean_vpc.droplets-network.id
   region   = var.region_agent
   size     = var.all_size
+  user_data = templatefile("files/userdata_agent", {
+    admin_password       = var.admin_password
+    cluster_name         = var.cluster_name
+    docker_version_agent = var.docker_version_agent
+    docker_root          = var.docker_root
+    rancher_registry     = var.rancher_registry
+    rancher_version      = var.rancher_version
+    server_address       = digitalocean_droplet.rancherserver[0].ipv4_address
+  })
+  ssh_keys = var.ssh_keys
+  tags     = [join("", ["user:", replace(split("@", data.digitalocean_account.do-account.email)[0], ".", "-")])]
+}
+
+resource "digitalocean_droplet" "rancheragent-master" {
+  count    = var.count_agent_master_nodes
+  image    = var.image_agent
+  name     = "${var.prefix}-rancheragent-master-${count.index}"
+  vpc_uuid = digitalocean_vpc.droplets-network.id
+  region   = var.region_agent
+  size     = var.master_size
   user_data = templatefile("files/userdata_agent", {
     admin_password       = var.admin_password
     cluster_name         = var.cluster_name
@@ -293,6 +157,25 @@ resource "digitalocean_droplet" "rancheragent-rke2-all" {
   vpc_uuid = digitalocean_vpc.droplets-network.id
   region   = var.region_agent
   size     = var.all_size
+  user_data = templatefile("files/userdata_rke2_agent", {
+    admin_password       = var.admin_password
+    cluster_rke2_name    = var.cluster_rke2_name
+    docker_version_agent = var.docker_version_agent
+    docker_root          = var.docker_root
+    rancher_version      = var.rancher_version
+    server_address       = digitalocean_droplet.rancherserver[0].ipv4_address
+  })
+  ssh_keys = var.ssh_keys
+  tags     = [join("", ["user:", replace(split("@", data.digitalocean_account.do-account.email)[0], ".", "-")])]
+}
+
+resource "digitalocean_droplet" "rancheragent-rke2-master" {
+  count    = var.count_rke2_agent_master_nodes
+  image    = var.image_agent
+  name     = "${var.prefix}-rancheragent-rke2-master-${count.index}"
+  vpc_uuid = digitalocean_vpc.droplets-network.id
+  region   = var.region_agent
+  size     = var.master_size
   user_data = templatefile("files/userdata_rke2_agent", {
     admin_password       = var.admin_password
     cluster_rke2_name    = var.cluster_rke2_name

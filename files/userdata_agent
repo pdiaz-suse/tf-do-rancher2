@@ -79,6 +79,8 @@ done
 ROLEFLAG=`hostname | awk -F'-' '{ print $(NF-1) }'`
 if [[ "$ROLEFLAG" == "all" ]]; then
   ROLEFLAG="all-roles"
+elif [[ "$ROLEFLAG" == "master" ]]; then
+  ROLEFLAG="etcd --controlplane"
 fi
 
 # Get token

@@ -40,6 +40,8 @@ done
 ROLEFLAG=`hostname | awk -F'-' '{ print $(NF-1) }'`
 if [[ "$ROLEFLAG" == "all" ]]; then
   ROLEFLAG="etcd --controlplane --worker"
+elif [[ "$ROLEFLAG" == "master" ]]; then
+  ROLEFLAG="etcd --controlplane"
 fi
 
 # Get token

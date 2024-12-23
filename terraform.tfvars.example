@@ -26,31 +26,37 @@ region_server = "lon1"
 # Region where agent(s) should be created
 region_agent = "lon1"
 
-# Count of agent nodes with role all
+# Count of RKE1 custom cluster nodes with all roles
 count_agent_all_nodes = "3"
 
-# Count of agent nodes with role etcd
+# Count of RKE1 custom cluster nodes with etcd and controlplane roles
+count_agent_master_nodes = "0"
+
+# Count of RKE1 custom cluster nodes with role etcd
 count_agent_etcd_nodes = "0"
 
-# Count of agent nodes with role controlplane
+# Count of RKE1 custom cluster nodes with role controlplane
 count_agent_controlplane_nodes = "0"
 
-# Count of agent nodes with role worker
+# Count of RKE1 custom cluster nodes with role worker
 count_agent_worker_nodes = "0"
 
 # Count of tools nodes
 count_tools_nodes = "0"
 
-# Count of RKE2/Government agent nodes with role all
+# Count of RKE2 custom cluster nodes with all roles
 count_rke2_agent_all_nodes = "0"
 
-# Count of RKE2/Government agent nodes with role etcd
+# Count of RKE2 custom cluster nodes with etcd and controlplane roles
+count_rke2_agent_master_nodes = "0"
+
+# Count of RKE2 custom cluster nodes with role etcd
 count_rke2_agent_etcd_nodes = "0"
 
-# Count of RKE2/Government agent nodes with role controlplane
+# Count of RKE2 custom cluster nodes with role controlplane
 count_rke2_agent_controlplane_nodes = "0"
 
-# Count of RKE2/Government agent nodes with role worker
+# Count of RKE2 custom cluster nodes with role worker
 count_rke2_agent_worker_nodes = "0"
 
 # Docker version of host running `rancher/rancher`
@@ -68,6 +74,8 @@ k8s_version = ""
 
 # Droplet sizes
 all_size = "s-4vcpu-8gb"
+
+master_size = "s-4vcpu-8gb"
 
 etcd_size = "s-4vcpu-8gb"
 
