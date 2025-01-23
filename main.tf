@@ -11,7 +11,13 @@ resource "digitalocean_vpc" "droplets-network" {
   region = var.region_server
 }
 
+resource "time_sleep" "wait_10_seconds_to_destroy_vpc" {
+  depends_on = [digitalocean_vpc.droplets-network]
+  destroy_duration = "10s"
+}
+
 resource "digitalocean_droplet" "rancherserver" {
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
   count    = "1"
   image    = var.image_server
   name     = "${var.prefix}-rancherserver"
@@ -37,6 +43,7 @@ resource "digitalocean_droplet" "rancherserver" {
 }
 
 resource "digitalocean_droplet" "rancheragent-all" {
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
   count    = var.count_agent_all_nodes
   image    = var.image_agent
   name     = "${var.prefix}-rancheragent-all-${count.index}"
@@ -57,6 +64,7 @@ resource "digitalocean_droplet" "rancheragent-all" {
 }
 
 resource "digitalocean_droplet" "rancheragent-master" {
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
   count    = var.count_agent_master_nodes
   image    = var.image_agent
   name     = "${var.prefix}-rancheragent-master-${count.index}"
@@ -77,6 +85,7 @@ resource "digitalocean_droplet" "rancheragent-master" {
 }
 
 resource "digitalocean_droplet" "rancheragent-etcd" {
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
   count    = var.count_agent_etcd_nodes
   image    = var.image_agent
   name     = "${var.prefix}-rancheragent-etcd-${count.index}"
@@ -97,6 +106,7 @@ resource "digitalocean_droplet" "rancheragent-etcd" {
 }
 
 resource "digitalocean_droplet" "rancheragent-controlplane" {
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
   count    = var.count_agent_controlplane_nodes
   image    = var.image_agent
   name     = "${var.prefix}-rancheragent-controlplane-${count.index}"
@@ -117,6 +127,7 @@ resource "digitalocean_droplet" "rancheragent-controlplane" {
 }
 
 resource "digitalocean_droplet" "rancheragent-worker" {
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
   count    = var.count_agent_worker_nodes
   image    = var.image_agent
   name     = "${var.prefix}-rancheragent-worker-${count.index}"
@@ -137,6 +148,7 @@ resource "digitalocean_droplet" "rancheragent-worker" {
 }
 
 resource "digitalocean_droplet" "rancher-tools" {
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
   count    = var.count_tools_nodes
   image    = var.image_tools
   name     = "${var.prefix}-rancher-tools-${count.index}"
@@ -151,6 +163,7 @@ resource "digitalocean_droplet" "rancher-tools" {
 }
 
 resource "digitalocean_droplet" "rancheragent-rke2-all" {
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
   count    = var.count_rke2_agent_all_nodes
   image    = var.image_agent
   name     = "${var.prefix}-rancheragent-rke2-all-${count.index}"
@@ -170,6 +183,7 @@ resource "digitalocean_droplet" "rancheragent-rke2-all" {
 }
 
 resource "digitalocean_droplet" "rancheragent-rke2-master" {
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
   count    = var.count_rke2_agent_master_nodes
   image    = var.image_agent
   name     = "${var.prefix}-rancheragent-rke2-master-${count.index}"
@@ -189,6 +203,7 @@ resource "digitalocean_droplet" "rancheragent-rke2-master" {
 }
 
 resource "digitalocean_droplet" "rancheragent-rke2-etcd" {
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
   count    = var.count_rke2_agent_etcd_nodes
   image    = var.image_agent
   name     = "${var.prefix}-rancheragent-rke2-etcd-${count.index}"
@@ -208,6 +223,7 @@ resource "digitalocean_droplet" "rancheragent-rke2-etcd" {
 }
 
 resource "digitalocean_droplet" "rancheragent-rke2-controlplane" {
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
   count    = var.count_rke2_agent_controlplane_nodes
   image    = var.image_agent
   name     = "${var.prefix}-rancheragent-rke2-controlplane-${count.index}"
@@ -227,6 +243,7 @@ resource "digitalocean_droplet" "rancheragent-rke2-controlplane" {
 }
 
 resource "digitalocean_droplet" "rancheragent-rke2-worker" {
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
   count    = var.count_rke2_agent_worker_nodes
   image    = var.image_agent
   name     = "${var.prefix}-rancheragent-rke2-worker-${count.index}"
