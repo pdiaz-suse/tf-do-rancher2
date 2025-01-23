@@ -8,5 +8,8 @@ terraform {
     local = {
       source = "hashicorp/local"
     }
+    time = {
+      source = "hashicorp/time"
+    }
   }
 }
