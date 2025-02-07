@@ -264,16 +264,22 @@ resource "digitalocean_droplet" "rancheragent-rke2-worker" {
 
 resource "local_file" "ssh_config" {
   content = templatefile("${path.module}/files/ssh_config_template", {
-    prefix                    = var.prefix
-    rancherserver             = digitalocean_droplet.rancherserver[0].ipv4_address,
-    rancheragent-all          = [for node in digitalocean_droplet.rancheragent-all : node.ipv4_address],
-    rancheragent-etcd         = [for node in digitalocean_droplet.rancheragent-etcd : node.ipv4_address],
-    rancheragent-controlplane = [for node in digitalocean_droplet.rancheragent-controlplane : node.ipv4_address],
-    rancheragent-worker       = [for node in digitalocean_droplet.rancheragent-worker : node.ipv4_address],
-    rancher-tools             = [for node in digitalocean_droplet.rancher-tools : node.ipv4_address],
-    user-server               = var.user_server,
-    user-agent                = var.user_agent,
-    user-tools                = var.user_tools
+    prefix                         = var.prefix
+    rancherserver                  = digitalocean_droplet.rancherserver[0].ipv4_address,
+    rancheragent-all               = [for node in digitalocean_droplet.rancheragent-all : node.ipv4_address],
+    rancheragent-master            = [for node in digitalocean_droplet.rancheragent-master : node.ipv4_address],
+    rancheragent-etcd              = [for node in digitalocean_droplet.rancheragent-etcd : node.ipv4_address],
+    rancheragent-controlplane      = [for node in digitalocean_droplet.rancheragent-controlplane : node.ipv4_address],
+    rancheragent-worker            = [for node in digitalocean_droplet.rancheragent-worker : node.ipv4_address],
+    rancheragent-rke2-all          = [for node in digitalocean_droplet.rancheragent-rke2-all : node.ipv4_address],
+    rancheragent-rke2-master       = [for node in digitalocean_droplet.rancheragent-rke2-master : node.ipv4_address],
+    rancheragent-rke2-etcd         = [for node in digitalocean_droplet.rancheragent-rke2-etcd : node.ipv4_address],
+    rancheragent-rke2-controlplane = [for node in digitalocean_droplet.rancheragent-rke2-controlplane : node.ipv4_address],
+    rancheragent-rke2-worker       = [for node in digitalocean_droplet.rancheragent-rke2-worker : node.ipv4_address],
+    rancher-tools                  = [for node in digitalocean_droplet.rancher-tools : node.ipv4_address],
+    user-server                    = var.user_server,
+    user-agent                     = var.user_agent,
+    user-tools                     = var.user_tools
   })
   filename = "${path.module}/ssh_config"
 }
