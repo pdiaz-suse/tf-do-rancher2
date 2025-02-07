@@ -12,18 +12,18 @@ resource "digitalocean_vpc" "droplets-network" {
 }
 
 resource "time_sleep" "wait_10_seconds_to_destroy_vpc" {
-  depends_on = [digitalocean_vpc.droplets-network]
+  depends_on       = [digitalocean_vpc.droplets-network]
   destroy_duration = "10s"
 }
 
 resource "digitalocean_droplet" "rancherserver" {
   depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
-  count    = "1"
-  image    = var.image_server
-  name     = "${var.prefix}-rancherserver"
-  vpc_uuid = digitalocean_vpc.droplets-network.id
-  region   = var.region_server
-  size     = var.size
+  count      = "1"
+  image      = var.image_server
+  name       = "${var.prefix}-rancherserver"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_server
+  size       = var.size
   user_data = templatefile("files/userdata_server", {
     admin_password          = var.admin_password
     cluster_name            = var.cluster_name
@@ -44,12 +44,12 @@ resource "digitalocean_droplet" "rancherserver" {
 
 resource "digitalocean_droplet" "rancheragent-all" {
   depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
-  count    = var.count_agent_all_nodes
-  image    = var.image_agent
-  name     = "${var.prefix}-rancheragent-all-${count.index}"
-  vpc_uuid = digitalocean_vpc.droplets-network.id
-  region   = var.region_agent
-  size     = var.all_size
+  count      = var.count_agent_all_nodes
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-all-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.all_size
   user_data = templatefile("files/userdata_agent", {
     admin_password       = var.admin_password
     cluster_name         = var.cluster_name
@@ -65,12 +65,12 @@ resource "digitalocean_droplet" "rancheragent-all" {
 
 resource "digitalocean_droplet" "rancheragent-master" {
   depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
-  count    = var.count_agent_master_nodes
-  image    = var.image_agent
-  name     = "${var.prefix}-rancheragent-master-${count.index}"
-  vpc_uuid = digitalocean_vpc.droplets-network.id
-  region   = var.region_agent
-  size     = var.master_size
+  count      = var.count_agent_master_nodes
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-master-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.master_size
   user_data = templatefile("files/userdata_agent", {
     admin_password       = var.admin_password
     cluster_name         = var.cluster_name
@@ -86,12 +86,12 @@ resource "digitalocean_droplet" "rancheragent-master" {
 
 resource "digitalocean_droplet" "rancheragent-etcd" {
   depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
-  count    = var.count_agent_etcd_nodes
-  image    = var.image_agent
-  name     = "${var.prefix}-rancheragent-etcd-${count.index}"
-  vpc_uuid = digitalocean_vpc.droplets-network.id
-  region   = var.region_agent
-  size     = var.etcd_size
+  count      = var.count_agent_etcd_nodes
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-etcd-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.etcd_size
   user_data = templatefile("files/userdata_agent", {
     admin_password       = var.admin_password
     cluster_name         = var.cluster_name
@@ -107,12 +107,12 @@ resource "digitalocean_droplet" "rancheragent-etcd" {
 
 resource "digitalocean_droplet" "rancheragent-controlplane" {
   depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
-  count    = var.count_agent_controlplane_nodes
-  image    = var.image_agent
-  name     = "${var.prefix}-rancheragent-controlplane-${count.index}"
-  vpc_uuid = digitalocean_vpc.droplets-network.id
-  region   = var.region_agent
-  size     = var.controlplane_size
+  count      = var.count_agent_controlplane_nodes
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-controlplane-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.controlplane_size
   user_data = templatefile("files/userdata_agent", {
     admin_password       = var.admin_password
     cluster_name         = var.cluster_name
@@ -128,12 +128,12 @@ resource "digitalocean_droplet" "rancheragent-controlplane" {
 
 resource "digitalocean_droplet" "rancheragent-worker" {
   depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
-  count    = var.count_agent_worker_nodes
-  image    = var.image_agent
-  name     = "${var.prefix}-rancheragent-worker-${count.index}"
-  vpc_uuid = digitalocean_vpc.droplets-network.id
-  region   = var.region_agent
-  size     = var.worker_size
+  count      = var.count_agent_worker_nodes
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-worker-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.worker_size
   user_data = templatefile("files/userdata_agent", {
     admin_password       = var.admin_password
     cluster_name         = var.cluster_name
@@ -149,12 +149,12 @@ resource "digitalocean_droplet" "rancheragent-worker" {
 
 resource "digitalocean_droplet" "rancher-tools" {
   depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
-  count    = var.count_tools_nodes
-  image    = var.image_tools
-  name     = "${var.prefix}-rancher-tools-${count.index}"
-  vpc_uuid = digitalocean_vpc.droplets-network.id
-  region   = var.region_agent
-  size     = var.tools_size
+  count      = var.count_tools_nodes
+  image      = var.image_tools
+  name       = "${var.prefix}-rancher-tools-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.tools_size
   user_data = templatefile("files/userdata_tools", {
     docker_version_agent = var.docker_version_agent
   })
@@ -164,12 +164,12 @@ resource "digitalocean_droplet" "rancher-tools" {
 
 resource "digitalocean_droplet" "rancheragent-rke2-all" {
   depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
-  count    = var.count_rke2_agent_all_nodes
-  image    = var.image_agent
-  name     = "${var.prefix}-rancheragent-rke2-all-${count.index}"
-  vpc_uuid = digitalocean_vpc.droplets-network.id
-  region   = var.region_agent
-  size     = var.all_size
+  count      = var.count_rke2_agent_all_nodes
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-rke2-all-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.all_size
   user_data = templatefile("files/userdata_rke2_agent", {
     admin_password       = var.admin_password
     cluster_rke2_name    = var.cluster_rke2_name
@@ -184,12 +184,12 @@ resource "digitalocean_droplet" "rancheragent-rke2-all" {
 
 resource "digitalocean_droplet" "rancheragent-rke2-master" {
   depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
-  count    = var.count_rke2_agent_master_nodes
-  image    = var.image_agent
-  name     = "${var.prefix}-rancheragent-rke2-master-${count.index}"
-  vpc_uuid = digitalocean_vpc.droplets-network.id
-  region   = var.region_agent
-  size     = var.master_size
+  count      = var.count_rke2_agent_master_nodes
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-rke2-master-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.master_size
   user_data = templatefile("files/userdata_rke2_agent", {
     admin_password       = var.admin_password
     cluster_rke2_name    = var.cluster_rke2_name
@@ -204,12 +204,12 @@ resource "digitalocean_droplet" "rancheragent-rke2-master" {
 
 resource "digitalocean_droplet" "rancheragent-rke2-etcd" {
   depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
-  count    = var.count_rke2_agent_etcd_nodes
-  image    = var.image_agent
-  name     = "${var.prefix}-rancheragent-rke2-etcd-${count.index}"
-  vpc_uuid = digitalocean_vpc.droplets-network.id
-  region   = var.region_agent
-  size     = var.etcd_size
+  count      = var.count_rke2_agent_etcd_nodes
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-rke2-etcd-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.etcd_size
   user_data = templatefile("files/userdata_rke2_agent", {
     admin_password       = var.admin_password
     cluster_rke2_name    = var.cluster_rke2_name
@@ -224,12 +224,12 @@ resource "digitalocean_droplet" "rancheragent-rke2-etcd" {
 
 resource "digitalocean_droplet" "rancheragent-rke2-controlplane" {
   depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
-  count    = var.count_rke2_agent_controlplane_nodes
-  image    = var.image_agent
-  name     = "${var.prefix}-rancheragent-rke2-controlplane-${count.index}"
-  vpc_uuid = digitalocean_vpc.droplets-network.id
-  region   = var.region_agent
-  size     = var.controlplane_size
+  count      = var.count_rke2_agent_controlplane_nodes
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-rke2-controlplane-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.controlplane_size
   user_data = templatefile("files/userdata_rke2_agent", {
     admin_password       = var.admin_password
     cluster_rke2_name    = var.cluster_rke2_name
@@ -244,12 +244,12 @@ resource "digitalocean_droplet" "rancheragent-rke2-controlplane" {
 
 resource "digitalocean_droplet" "rancheragent-rke2-worker" {
   depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
-  count    = var.count_rke2_agent_worker_nodes
-  image    = var.image_agent
-  name     = "${var.prefix}-rancheragent-rke2-worker-${count.index}"
-  vpc_uuid = digitalocean_vpc.droplets-network.id
-  region   = var.region_agent
-  size     = var.worker_size
+  count      = var.count_rke2_agent_worker_nodes
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-rke2-worker-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.worker_size
   user_data = templatefile("files/userdata_rke2_agent", {
     admin_password       = var.admin_password
     cluster_rke2_name    = var.cluster_rke2_name
@@ -264,16 +264,22 @@ resource "digitalocean_droplet" "rancheragent-rke2-worker" {
 
 resource "local_file" "ssh_config" {
   content = templatefile("${path.module}/files/ssh_config_template", {
-    prefix                    = var.prefix
-    rancherserver             = digitalocean_droplet.rancherserver[0].ipv4_address,
-    rancheragent-all          = [for node in digitalocean_droplet.rancheragent-all : node.ipv4_address],
-    rancheragent-etcd         = [for node in digitalocean_droplet.rancheragent-etcd : node.ipv4_address],
-    rancheragent-controlplane = [for node in digitalocean_droplet.rancheragent-controlplane : node.ipv4_address],
-    rancheragent-worker       = [for node in digitalocean_droplet.rancheragent-worker : node.ipv4_address],
-    rancher-tools             = [for node in digitalocean_droplet.rancher-tools : node.ipv4_address],
-    user-server               = var.user_server,
-    user-agent                = var.user_agent,
-    user-tools                = var.user_tools
+    prefix                         = var.prefix
+    rancherserver                  = digitalocean_droplet.rancherserver[0].ipv4_address,
+    rancheragent-all               = [for node in digitalocean_droplet.rancheragent-all : node.ipv4_address],
+    rancheragent-master            = [for node in digitalocean_droplet.rancheragent-master : node.ipv4_address],
+    rancheragent-etcd              = [for node in digitalocean_droplet.rancheragent-etcd : node.ipv4_address],
+    rancheragent-controlplane      = [for node in digitalocean_droplet.rancheragent-controlplane : node.ipv4_address],
+    rancheragent-worker            = [for node in digitalocean_droplet.rancheragent-worker : node.ipv4_address],
+    rancheragent-rke2-all          = [for node in digitalocean_droplet.rancheragent-rke2-all : node.ipv4_address],
+    rancheragent-rke2-master       = [for node in digitalocean_droplet.rancheragent-rke2-master : node.ipv4_address],
+    rancheragent-rke2-etcd         = [for node in digitalocean_droplet.rancheragent-rke2-etcd : node.ipv4_address],
+    rancheragent-rke2-controlplane = [for node in digitalocean_droplet.rancheragent-rke2-controlplane : node.ipv4_address],
+    rancheragent-rke2-worker       = [for node in digitalocean_droplet.rancheragent-rke2-worker : node.ipv4_address],
+    rancher-tools                  = [for node in digitalocean_droplet.rancher-tools : node.ipv4_address],
+    user-server                    = var.user_server,
+    user-agent                     = var.user_agent,
+    user-tools                     = var.user_tools
   })
   filename = "${path.module}/ssh_config"
 }
