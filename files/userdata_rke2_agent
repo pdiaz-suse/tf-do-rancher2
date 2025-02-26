@@ -38,6 +38,14 @@ done
 
 # Get role flags from hostname
 ROLEFLAG=`hostname | awk -F'-' '{ print $(NF-1) }'`
+
+# Set env for kubectl on rke2 server nodes
+if [[ "$ROLEFLAG" == "all" || "$ROLEFLAG" == "master" || "$ROLEFLAG" == "controlplane" ]]; then
+  echo "export KUBECONFIG=/etc/rancher/rke2/rke2.yaml" >> /etc/profile
+  echo "alias kubectl=/var/lib/rancher/rke2/bin/kubectl" >> /etc/profile
+fi
+
+# Set role flag for all role and master role nodes
 if [[ "$ROLEFLAG" == "all" ]]; then
   ROLEFLAG="etcd --controlplane --worker"
 elif [[ "$ROLEFLAG" == "master" ]]; then
