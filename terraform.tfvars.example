@@ -68,9 +68,11 @@ docker_version_agent = "24.0"
 # Docker root on agent nodes
 docker_root = ""
 
-# K8s version of created cluster
-#k8s_version = "v1.12.0-rancher1-1"
-k8s_version = ""
+# K8s version of RKE custom cluster
+#k8s_version = ""
+
+# K8s version of RKE2 custom cluster
+#k8s_rke2_version = ""
 
 # Droplet sizes
 all_size = "s-4vcpu-8gb"
