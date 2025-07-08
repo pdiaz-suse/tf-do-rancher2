@@ -289,9 +289,9 @@ output "rancher-url" {
 }
 
 output "tools-private-ip" {
-  value = [digitalocean_droplet.rancher-tools.*.ipv4_address_private]
+  value = var.count_tools_nodes > 0 ? [digitalocean_droplet.rancher-tools.*.ipv4_address_private] : null
 }
 
 output "tools-public-ip" {
-  value = [digitalocean_droplet.rancher-tools.*.ipv4_address]
+  value =  var.count_tools_nodes > 0 ? [digitalocean_droplet.rancher-tools.*.ipv4_address] : null
 }
