@@ -5,6 +5,7 @@ provider "registry.terraform.io/digitalocean/digitalocean" {
   version = "2.58.0"
   hashes = [
     "h1:+/yfAzJQ43MeHa5tgeZwwlXwAF4NeslnBInc6Aq5hsU=",
+    "h1:RCZ4jYJp54wgwki4gxOs0DObzT2Gtmf85MLmcpPgUrw=",
     "zh:00085323b68a18a66bfcddd077dd88f6d632e74829100b82a77628379bea8b86",
     "zh:1b254bc4b52e2d433250109b1a55a1d304abbc0274c6f548ea19a775edf335a4",
     "zh:2721c7a95983f9028dfc44af5fb84eb4b06547bd69ca268290867c6f786af134",
@@ -27,6 +28,7 @@ provider "registry.terraform.io/digitalocean/digitalocean" {
 provider "registry.terraform.io/hashicorp/local" {
   version = "2.5.3"
   hashes = [
+    "h1:MCzg+hs1/ZQ32u56VzJMWP9ONRQPAAqAjuHuzbyshvI=",
     "h1:Zy6RilIeIWBXksQWXjCLbqr9Om9R8cWX+axQlLebppM=",
     "zh:284d4b5b572eacd456e605e94372f740f6de27b71b4e1fd49b63745d8ecd4927",
     "zh:40d9dfc9c549e406b5aab73c023aa485633c1b6b730c933d7bcc2fa67fd1ae6e",
@@ -46,6 +48,7 @@ provider "registry.terraform.io/hashicorp/local" {
 provider "registry.terraform.io/hashicorp/time" {
   version = "0.13.1"
   hashes = [
+    "h1:ZT5ppCNIModqk3iOkVt5my8b8yBHmDpl663JtXAIRqM=",
     "h1:eSX+RgYfeumojmeJ9Y5CbnkH2NkBC+9vUEolqdQVtGw=",
     "zh:02cb9aab1002f0f2a94a4f85acec8893297dc75915f7404c165983f720a54b74",
     "zh:04429b2b31a492d19e5ecf999b116d396dac0b24bba0d0fb19ecaefe193fdb8f",
