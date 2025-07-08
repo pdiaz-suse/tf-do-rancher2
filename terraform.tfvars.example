@@ -74,6 +74,12 @@ docker_root = ""
 # K8s version of RKE2 custom cluster
 #k8s_rke2_version = ""
 
+# CNI for the RKE cluster
+rke_cni = "canal"
+
+# CNI for the RKE2 cluster
+rke2_cni ="calico"
+
 # Droplet sizes
 all_size = "s-4vcpu-8gb"
 

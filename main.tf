@@ -35,6 +35,8 @@ resource "digitalocean_droplet" "rancherserver" {
     rancher_args            = var.rancher_args
     k8s_version             = var.k8s_version
     k8s_rke2_version        = var.k8s_rke2_version
+    rke_cni                 = var.rke_cni
+    rke2_cni                = var.rke2_cni
     audit_level             = var.audit_level
     kernel_nf_conntrack_max = var.kernel_nf_conntrack_max
   })

@@ -134,6 +134,14 @@ variable "k8s_rke2_version" {
   default = ""
 }
 
+variable "rke_cni" {
+  default = "canal"
+}
+
+variable "rke2_cni" {
+  default = "calico"
+}
+
 variable "image_server" {
   default = "ubuntu-22-04-x64"
 }
