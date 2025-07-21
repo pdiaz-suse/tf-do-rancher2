@@ -115,7 +115,9 @@ user_tools = "root"
 kernel_nf_conntrack_max = "131072"
 
 ## Hardening option for custom downstream RKE2
+## Select the hardening profile between cis or cis-1.23
 hardening_rke2 = "true"
+profile = "cis"
 
 # DigitalOcean ssh-keyid
 # ssh_keys = [ "your_key_id" ]
