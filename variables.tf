@@ -173,3 +173,11 @@ variable "kernel_nf_conntrack_max" {
 variable "ssh_keys" {
   default = []
 }
+
+variable "hardening" {
+  default = ""
+}
+
+variable "profile" {
+  default = ""
+}
