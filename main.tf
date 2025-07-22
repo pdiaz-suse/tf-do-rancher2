@@ -28,6 +28,7 @@ resource "digitalocean_droplet" "rancherserver" {
     admin_password          = var.admin_password
     cluster_name            = var.cluster_name
     cluster_rke2_name       = var.cluster_rke2_name
+    cluster_rke2_hardened_name = var.cluster_rke2_hardened_name
     docker_version_server   = var.docker_version_server
     docker_root             = var.docker_root
     rancher_version         = var.rancher_version
