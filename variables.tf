@@ -98,6 +98,10 @@ variable "cluster_rke2_name" {
   default = "rke2custom"
 }
 
+variable "cluster_rke2_hardened_name" {
+  default = "rke2customhardened"
+}  
+
 variable "region_server" {
   default = "lon1"
 }
