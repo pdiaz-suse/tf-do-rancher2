@@ -39,6 +39,8 @@ resource "digitalocean_droplet" "rancherserver" {
     rke2_cni                = var.rke2_cni
     audit_level             = var.audit_level
     kernel_nf_conntrack_max = var.kernel_nf_conntrack_max
+    hardening_rke2          = var.hardening_rke2
+    profile                 = var.profile
   })
   ssh_keys = var.ssh_keys
   tags     = [join("", ["user:", replace(split("@", data.digitalocean_account.do-account.email)[0], ".", "-")])]

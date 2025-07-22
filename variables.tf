@@ -174,10 +174,24 @@ variable "ssh_keys" {
   default = []
 }
 
-variable "hardening" {
-  default = ""
+variable "hardening_rke2" {
+  description = "Enable node-level RKE2 hardening. 'true' or 'false' (string)."
+  type        = string
+  default     = "false"
+
+  validation {
+    condition     = contains(["true", "false"], var.hardening_rke2)
+    error_message = "Valid values for hardening_rke2 are 'true' or 'false'."
+  }
 }
 
 variable "profile" {
-  default = ""
+  description = "Security hardening profile to use for RKE2 custom cluster"
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = var.profile == "" || contains(["cis", "cis-1.23"], var.profile)
+    error_message = "If set, 'profile' must be 'cis' or 'cis-1.23'. Leave blank to disable."
+  }
 }
