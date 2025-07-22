@@ -66,6 +66,26 @@ variable "count_rke2_agent_worker_nodes" {
   default = "0"
 }
 
+variable "count_rke2_hardened_agent_all_nodes" {
+  default = "0"
+}
+
+variable "count_rke2_hardened_agent_master_nodes" {
+  default = "0"
+}
+
+variable "count_rke2_hardened_agent_etcd_nodes" {
+  default = "0"
+}
+
+variable "count_rke2_hardened_agent_controlplane_nodes" {
+  default = "0"
+}
+
+variable "count_rke2_hardened_agent_worker_nodes" {
+  default = "0"
+}
+
 variable "admin_password" {
   default = "admin"
 }
@@ -172,26 +192,4 @@ variable "kernel_nf_conntrack_max" {
 
 variable "ssh_keys" {
   default = []
-}
-
-variable "hardening_rke2" {
-  description = "Enable node-level RKE2 hardening. 'true' or 'false' (string)."
-  type        = string
-  default     = "false"
-
-  validation {
-    condition     = contains(["true", "false"], var.hardening_rke2)
-    error_message = "Valid values for hardening_rke2 are 'true' or 'false'."
-  }
-}
-
-variable "profile" {
-  description = "Security hardening profile to use for RKE2 custom cluster"
-  type        = string
-  default     = ""
-
-  validation {
-    condition     = var.profile == "" || contains(["cis", "cis-1.23"], var.profile)
-    error_message = "If set, 'profile' must be 'cis' or 'cis-1.23'. Leave blank to disable."
-  }
 }
