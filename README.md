@@ -1,15 +1,8 @@
----
-marp: true
-theme: default
-paginate: true
-size: 16:9
----
-
 # 🚀 RKE2 CIS Hardened Clusters  
 ### What, Why, and How We Did It
 
-**Author:** [Your Name]  
-**Date:** [Today’s Date]
+**Author:** [Pablo Diaz]  
+**Date:** [July 24]
 
 ---
 
@@ -22,9 +15,6 @@ size: 16:9
   - Meet compliance goals
   - Improve production-grade security
 
-**🗣️ Speaker Notes:**  
-> CIS hardening enables stricter rules on what runs in the cluster and how. It’s a security upgrade over the defaults — particularly valuable in production environments.
-
 ---
 
 # 🔄 Standard vs CIS Hardened RKE2
@@ -36,9 +26,6 @@ size: 16:9
 | Admission Config File          | ❌ No          | ✅ Yes (`rancher-psact.yaml`) |
 | Hardened User Data             | ❌ No          | ✅ Yes |
 | Exempt System Namespaces       | ❌ No          | ✅ Yes |
-
-**🗣️ Speaker Notes:**  
-> The hardened cluster enforces pod-level policies and system configurations using Rancher’s built-in mechanisms, but only when explicitly enabled.
 
 ---
 
@@ -66,29 +53,16 @@ size: 16:9
 A new public API: **RK-API**  
 - More stable
 - Officially supported
-- Not ready until v2.13+
-
-**🗣️ Speaker Notes:**  
-> We're using this internal API with caution. The long-term goal is to migrate to RK-API, but it’s still under development.
+- Not ready until v2.12+
 
 ---
 
-# 📦 Cluster Payload Differences
+# 📦 Summary
 
-### 🟥 Standard RKE2 Payload
-
-```json
-"spec": {
-  "kubernetesVersion": "...",
-  "rkeConfig": {
-    "machineGlobalConfig": {
-      "cni": "calico"
-    },
-    ...
-  }
-}
-
-
+- We automated CIS hardened RKE2 clusters via Rancher internal API
+- Used curl inside Docker + JSON payloads
+- Added Terraform logic for hardened droplets
+- Injected system-level security config at boot
 
 # Terraform config to launch Rancher 2
 
