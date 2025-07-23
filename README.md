@@ -47,7 +47,7 @@
 - Not covered by Rancher Support
 - **May break between versions**
 
-> ✅ It works now, but SUSE Rancher recommends **not depending on it long term**.
+> ✅ It works now, but we cannot suggest customers **depending on it long term**.
 
 **🧭 What's coming?**  
 A new public API: **RK-API**  
