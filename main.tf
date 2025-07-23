@@ -265,6 +265,106 @@ resource "digitalocean_droplet" "rancheragent-rke2-worker" {
   tags     = [join("", ["user:", replace(split("@", data.digitalocean_account.do-account.email)[0], ".", "-")])]
 }
 
+resource "digitalocean_droplet" "rancheragent-rke2-hardened-all" {
+  count      = var.count_rke2_hardened_agent_all_nodes
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-rke2-hardened-all-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.all_size
+  user_data = templatefile("files/userdata_rke2_hardened_agent", {
+    admin_password       = var.admin_password
+    cluster_rke2_name    = var.cluster_rke2_hardened_name
+    docker_version_agent = var.docker_version_agent
+    docker_root          = var.docker_root
+    rancher_version      = var.rancher_version
+    server_address       = digitalocean_droplet.rancherserver[0].ipv4_address
+  })
+  ssh_keys = var.ssh_keys
+  tags     = [join("", ["user:", replace(split("@", data.digitalocean_account.do-account.email)[0], ".", "-")])]
+}
+
+resource "digitalocean_droplet" "rancheragent-rke2-hardened-master" {
+  count      = var.count_rke2_hardened_agent_master_nodes
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-rke2-hardened-master-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.master_size
+  user_data = templatefile("files/userdata_rke2_hardened_agent", {
+    admin_password       = var.admin_password
+    cluster_rke2_name    = var.cluster_rke2_hardened_name
+    docker_version_agent = var.docker_version_agent
+    docker_root          = var.docker_root
+    rancher_version      = var.rancher_version
+    server_address       = digitalocean_droplet.rancherserver[0].ipv4_address
+  })
+  ssh_keys = var.ssh_keys
+  tags     = [join("", ["user:", replace(split("@", data.digitalocean_account.do-account.email)[0], ".", "-")])]
+}
+
+resource "digitalocean_droplet" "rancheragent-rke2-hardened-etcd" {
+  count      = var.count_rke2_hardened_agent_etcd_nodes
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-rke2-hardened-etcd-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.etcd_size
+  user_data = templatefile("files/userdata_rke2_hardened_agent", {
+    admin_password       = var.admin_password
+    cluster_rke2_name    = var.cluster_rke2_hardened_name
+    docker_version_agent = var.docker_version_agent
+    docker_root          = var.docker_root
+    rancher_version      = var.rancher_version
+    server_address       = digitalocean_droplet.rancherserver[0].ipv4_address
+  })
+  ssh_keys = var.ssh_keys
+  tags     = [join("", ["user:", replace(split("@", data.digitalocean_account.do-account.email)[0], ".", "-")])]
+}
+
+resource "digitalocean_droplet" "rancheragent-rke2-hardened-controlplane" {
+  count      = var.count_rke2_hardened_agent_controlplane_nodes
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-rke2-hardened-controlplane-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.controlplane_size
+  user_data = templatefile("files/userdata_rke2_hardened_agent", {
+    admin_password       = var.admin_password
+    cluster_rke2_name    = var.cluster_rke2_hardened_name
+    docker_version_agent = var.docker_version_agent
+    docker_root          = var.docker_root
+    rancher_version      = var.rancher_version
+    server_address       = digitalocean_droplet.rancherserver[0].ipv4_address
+  })
+  ssh_keys = var.ssh_keys
+  tags     = [join("", ["user:", replace(split("@", data.digitalocean_account.do-account.email)[0], ".", "-")])]
+}
+
+resource "digitalocean_droplet" "rancheragent-rke2-hardened-worker" {
+  count      = var.count_rke2_hardened_agent_worker_nodes
+  depends_on = [time_sleep.wait_10_seconds_to_destroy_vpc]
+  image      = var.image_agent
+  name       = "${var.prefix}-rancheragent-rke2-hardened-worker-${count.index}"
+  vpc_uuid   = digitalocean_vpc.droplets-network.id
+  region     = var.region_agent
+  size       = var.worker_size
+  user_data = templatefile("files/userdata_rke2_hardened_agent", {
+    admin_password       = var.admin_password
+    cluster_rke2_name    = var.cluster_rke2_hardened_name
+    docker_version_agent = var.docker_version_agent
+    docker_root          = var.docker_root
+    rancher_version      = var.rancher_version
+    server_address       = digitalocean_droplet.rancherserver[0].ipv4_address
+  })
+  ssh_keys = var.ssh_keys
+  tags     = [join("", ["user:", replace(split("@", data.digitalocean_account.do-account.email)[0], ".", "-")])]
+}
+
 resource "local_file" "ssh_config" {
   content = templatefile("${path.module}/files/ssh_config_template", {
     prefix                         = var.prefix
@@ -279,6 +379,11 @@ resource "local_file" "ssh_config" {
     rancheragent-rke2-etcd         = [for node in digitalocean_droplet.rancheragent-rke2-etcd : node.ipv4_address],
     rancheragent-rke2-controlplane = [for node in digitalocean_droplet.rancheragent-rke2-controlplane : node.ipv4_address],
     rancheragent-rke2-worker       = [for node in digitalocean_droplet.rancheragent-rke2-worker : node.ipv4_address],
+    rancheragent-rke2-hardened-all          = [for node in digitalocean_droplet.rancheragent-rke2-hardened-all : node.ipv4_address],
+    rancheragent-rke2-hardened-master       = [for node in digitalocean_droplet.rancheragent-rke2-hardened-master : node.ipv4_address],
+    rancheragent-rke2-hardened-etcd         = [for node in digitalocean_droplet.rancheragent-rke2-hardened-etcd : node.ipv4_address],
+    rancheragent-rke2-hardened-controlplane = [for node in digitalocean_droplet.rancheragent-rke2-hardened-controlplane : node.ipv4_address],
+    rancheragent-rke2-hardened-worker       = [for node in digitalocean_droplet.rancheragent-rke2-hardened-worker : node.ipv4_address],
     rancher-tools                  = [for node in digitalocean_droplet.rancher-tools : node.ipv4_address],
     user-server                    = var.user_server,
     user-agent                     = var.user_agent,
