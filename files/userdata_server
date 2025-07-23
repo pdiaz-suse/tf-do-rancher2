@@ -4,6 +4,50 @@ export curlimage=appropriate/curl
 export jqimage=ghcr.io/jqlang/jq
 export semver2_version=1.0.5
 
+### Create the rancher-psact.yaml 
+cat <<EOF >/root/admission-config.yaml
+apiVersion: apiserver.config.k8s.io/v1
+kind: AdmissionConfiguration
+plugins:
+- configuration:
+    apiVersion: pod-security.admission.config.k8s.io/v1
+    defaults:
+      audit: restricted
+      audit-version: latest
+      enforce: restricted
+      enforce-version: latest
+      warn: restricted
+      warn-version: latest
+    exemptions:
+      namespaces:
+      - ingress-nginx
+      - kube-system
+      - cattle-system
+      - cattle-epinio-system
+      - cattle-fleet-system
+      - cattle-fleet-local-system
+      - longhorn-system
+      - cattle-neuvector-system
+      - cattle-monitoring-system
+      - rancher-alerting-drivers
+      - cis-operator-system
+      - cattle-csp-adapter-system
+      - cattle-externalip-system
+      - cattle-gatekeeper-system
+      - istio-system
+      - cattle-istio-system
+      - cattle-logging-system
+      - cattle-windows-gmsa-system
+      - cattle-sriov-system
+      - cattle-ui-plugin-system
+      - tigera-operator
+      - cattle-provisioning-capi-system
+    kind: PodSecurityConfiguration
+  name: PodSecurity
+  path: ""
+EOF
+
+
 if [ `command -v curl` ]; then
   curl -sL https://releases.rancher.com/install-docker/${docker_version_server}.sh | sh
   curl -sLf https://github.com/Ariel-Rodriguez/sh-semversion-2/archive/refs/tags/v$semver2_version.tar.gz | tar xvfz - -C /usr/bin --strip-components=1 sh-semversion-2-$semver2_version/semver2.sh && \
@@ -177,7 +221,20 @@ docker run --rm --net=host $curlimage -s 'https://127.0.0.1/v3/clusterregistrati
 # Creating hardened CIS RKE2 cluster
 #CLUSTERRESPONSE=$(docker run --rm --net=host $curlimage -s 'https://127.0.0.1/v1/provisioning.cattle.io.clusters' -H 'content-type: application/json' -H "Authorization: Bearer $APITOKEN" --data-binary '{"type":"provisioning.cattle.io.cluster","metadata":{"namespace":"fleet-default","name":"${cluster_rke2_hardened_name}"},"spec":{"kubernetesVersion":"'$${RKE2_K8S_VERSION}'","rkeConfig":{"machineGlobalConfig":{"cni":"${rke2_cni}"},"upgradeStrategy":{"controlPlaneConcurrency":"10%","controlPlaneDrainOptions":{},"workerConcurrency":"10%","workerDrainOptions":{}},"localClusterAuthEndpoint":{"enabled":false,"caCerts":"","fqdn":""},"machineSelectorConfig":[{"config":{"profile":"cis","protect-kernel-defaults":true}}],"machinePools":[]},"defaultPodSecurityPolicyTemplateName":"rancher-restricted"}}' --insecure)
 
+
+docker cp /root/admission-config.yaml rancher-server:/root/admission-config.yaml
+docker exec rancher-server kubectl create secret generic rke2customhardened-admission-configuration-psact \
+  --namespace=fleet-default \
+  --from-file=admission-config-psact=/root/admission-config.yaml \
+  --type=Opaque --dry-run=client -o yaml | \
+  docker exec -i rancher-server kubectl annotate -f - \
+  "rke.cattle.io/object-authorized-for-clusters=rke2customhardened" --local -o yaml | \
+  docker exec -i rancher-server kubectl apply -f -
+
+
 CLUSTERRESPONSE=$(docker run --rm --net=host $curlimage -s 'https://127.0.0.1/v1/provisioning.cattle.io.clusters' -H 'content-type: application/json' -H "Authorization: Bearer $APITOKEN" --data-binary '{"type":"provisioning.cattle.io.cluster","metadata":{"namespace":"fleet-default","name":"${cluster_rke2_hardened_name}"},"spec":{"kubernetesVersion":"'$${RKE2_K8S_VERSION}'","rkeConfig":{"machineGlobalConfig":{"cni":"${rke2_cni}","kube-apiserver-arg":["admission-control-config-file=/etc/rancher/rke2/config/rancher-psact.yaml"]},"machineSelectorConfig":[{"config":{"profile":"cis","protect-kernel-defaults":true}}],"upgradeStrategy":{"controlPlaneConcurrency":"10%","controlPlaneDrainOptions":{},"workerConcurrency":"10%","workerDrainOptions":{}},"localClusterAuthEndpoint":{"enabled":false,"caCerts":"","fqdn":""},"machinePools":[]},"defaultPodSecurityPolicyTemplateName":"rancher-restricted"}}' --insecure)
+
+#CLUSTERRESPONSE=$(docker run --rm --net=host $curlimage -s 'https://127.0.0.1/v1/provisioning.cattle.io.clusters' -H 'content-type: application/json' -H "Authorization: Bearer $APITOKEN" --data-binary '{"type":"provisioning.cattle.io.cluster","metadata":{"namespace":"fleet-default","name":"${cluster_rke2_hardened_name}"},"spec":{"kubernetesVersion":"'$${RKE2_K8S_VERSION}'","rkeConfig":{"machineGlobalConfig":{"cni":"${rke2_cni}","kube-apiserver-arg":["admission-control-config-file=/etc/rancher/rke2/config/rancher-psact.yaml"]},"machineSelectorConfig":[{"config":{"profile":"cis","protect-kernel-defaults":true}}],"upgradeStrategy":{"controlPlaneConcurrency":"10%","controlPlaneDrainOptions":{},"workerConcurrency":"10%","workerDrainOptions":{}},"localClusterAuthEndpoint":{"enabled":false,"caCerts":"","fqdn":""},"machinePools":[]},"defaultPodSecurityPolicyTemplateName":null}}' --insecure)
 
 # Get  clusterid to use for generating the docker run command -- hardened version
 CLUSTERID=`docker run --rm --net=host $curlimage -s 'https://127.0.0.1/v3/clusters?name=${cluster_rke2_hardened_name}' -H 'content-type: application/json' -H "Authorization: Bearer $APITOKEN" --insecure | docker run --rm -i $jqimage -r .data[].id`
