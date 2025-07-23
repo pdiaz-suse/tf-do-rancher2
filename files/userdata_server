@@ -154,7 +154,6 @@ CLUSTERID=`echo $CLUSTERRESPONSE | docker run --rm -i $jqimage -r .id`
 docker run --rm --net=host $curlimage -s 'https://127.0.0.1/v3/clusterregistrationtoken' -H 'content-type: application/json' -H "Authorization: Bearer $APITOKEN" --data-binary '{"type":"clusterRegistrationToken","clusterId":"'$CLUSTERID'"}' --insecure
 
 # Create RKE2 cluster (only available in v2.6.x and higher)
-# Adding conditional logic to enable RKE2 hardening
 RKE2_K8S_VERSION=${k8s_rke2_version}
 if [[ "x$${RKE2_K8S_VERSION}" == "x" ]]; then
   # Look up latest available
@@ -175,8 +174,6 @@ CLUSTERID=`docker run --rm --net=host $curlimage -s 'https://127.0.0.1/v3/cluste
 docker run --rm --net=host $curlimage -s 'https://127.0.0.1/v3/clusterregistrationtoken' -H 'content-type: application/json' -H "Authorization: Bearer $APITOKEN" --data-binary '{"type":"clusterRegistrationToken","clusterId":"'$CLUSTERID'"}' --insecure
 
 # Creating hardened CIS RKE2 cluster
-#CLUSTERRESPONSE=$(docker run --rm --net=host $curlimage -s 'https://127.0.0.1/v1/provisioning.cattle.io.clusters' -H 'content-type: application/json' -H "Authorization: Bearer $APITOKEN" --data-binary '{"type":"provisioning.cattle.io.cluster","metadata":{"namespace":"fleet-default","name":"${cluster_rke2_hardened_name}"},"spec":{"kubernetesVersion":"'$${RKE2_K8S_VERSION}'","rkeConfig":{"machineGlobalConfig":{"cni":"${rke2_cni}","kube-apiserver-arg":["admission-control-config-file=/etc/rancher/rke2/config/rancher-psact.yaml"]},"machineSelectorConfig":[{"config":{"profile":"cis","protect-kernel-defaults":true}}],"upgradeStrategy":{"controlPlaneConcurrency":"10%","controlPlaneDrainOptions":{},"workerConcurrency":"10%","workerDrainOptions":{}},"localClusterAuthEndpoint":{"enabled":false,"caCerts":"","fqdn":""},"machinePools":[]},"defaultPodSecurityPolicyTemplateName":"rancher-restricted"}}' --insecure)
-
 CLUSTERRESPONSE=$(docker run --rm --net=host $curlimage -s 'https://127.0.0.1/v1/provisioning.cattle.io.clusters' -H 'content-type: application/json' -H "Authorization: Bearer $APITOKEN" --data-binary '{"type":"provisioning.cattle.io.cluster","metadata":{"namespace":"fleet-default","name":"${cluster_rke2_hardened_name}"},"spec":{"kubernetesVersion":"'$${RKE2_K8S_VERSION}'","rkeConfig":{"machineGlobalConfig":{"cni":"${rke2_cni}","kube-apiserver-arg":["admission-control-config-file=/etc/rancher/rke2/config/rancher-psact.yaml"]},"machineSelectorConfig":[{"config":{"profile":"cis","protect-kernel-defaults":true}}],"upgradeStrategy":{"controlPlaneConcurrency":"10%","controlPlaneDrainOptions":{},"workerConcurrency":"10%","workerDrainOptions":{}},"localClusterAuthEndpoint":{"enabled":false,"caCerts":"","fqdn":""},"machinePools":[]},"defaultPodSecurityAdmissionConfigurationTemplateName":"rancher-restricted"}}' --insecure)
 
 # Get  clusterid to use for generating the docker run command -- hardened version
