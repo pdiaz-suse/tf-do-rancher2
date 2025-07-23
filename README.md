@@ -1,3 +1,95 @@
+---
+marp: true
+theme: default
+paginate: true
+size: 16:9
+---
+
+# 🚀 RKE2 CIS Hardened Clusters  
+### What, Why, and How We Did It
+
+**Author:** [Your Name]  
+**Date:** [Today’s Date]
+
+---
+
+# 🔐 Why Harden a Cluster?
+
+- CIS = *Center for Internet Security*
+- Provides a benchmark of best practices for securing Kubernetes
+- Hardened clusters help:
+  - Enforce least privilege
+  - Meet compliance goals
+  - Improve production-grade security
+
+**🗣️ Speaker Notes:**  
+> CIS hardening enables stricter rules on what runs in the cluster and how. It’s a security upgrade over the defaults — particularly valuable in production environments.
+
+---
+
+# 🔄 Standard vs CIS Hardened RKE2
+
+| Feature                         | Standard RKE2 | CIS Hardened RKE2 |
+|--------------------------------|---------------|-------------------|
+| Pod Security Policies          | ❌ Not enforced | ✅ Enforced (restricted) |
+| CIS Kernel Defaults            | ❌ No          | ✅ Yes (`protect-kernel-defaults`) |
+| Admission Config File          | ❌ No          | ✅ Yes (`rancher-psact.yaml`) |
+| Hardened User Data             | ❌ No          | ✅ Yes |
+| Exempt System Namespaces       | ❌ No          | ✅ Yes |
+
+**🗣️ Speaker Notes:**  
+> The hardened cluster enforces pod-level policies and system configurations using Rancher’s built-in mechanisms, but only when explicitly enabled.
+
+---
+
+# 🔧 How We Create Clusters
+
+### ✅ We use the **internal Rancher provisioning API**  
+`/v1/provisioning.cattle.io.clusters`
+
+---
+
+## ⚠️ Internal API Caveats
+
+- Not a public API
+- Known as *"v2 provisioning"*
+- Used internally by:
+  - Rancher UI
+  - Rancher Terraform Provider
+  - Elemental
+- Not covered by Rancher Support
+- **May break between versions**
+
+> ✅ It works now, but SUSE Rancher recommends **not depending on it long term**.
+
+**🧭 What's coming?**  
+A new public API: **RK-API**  
+- More stable
+- Officially supported
+- Not ready until v2.13+
+
+**🗣️ Speaker Notes:**  
+> We're using this internal API with caution. The long-term goal is to migrate to RK-API, but it’s still under development.
+
+---
+
+# 📦 Cluster Payload Differences
+
+### 🟥 Standard RKE2 Payload
+
+```json
+"spec": {
+  "kubernetesVersion": "...",
+  "rkeConfig": {
+    "machineGlobalConfig": {
+      "cni": "calico"
+    },
+    ...
+  }
+}
+
+
+
 # Terraform config to launch Rancher 2
 
 **Note: requires Terraform v0.13**
