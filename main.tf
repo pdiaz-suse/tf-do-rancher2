@@ -275,7 +275,7 @@ resource "digitalocean_droplet" "rancheragent-rke2-hardened-all" {
   size       = var.all_size
   user_data = templatefile("files/userdata_rke2_hardened_agent", {
     admin_password       = var.admin_password
-    cluster_rke2_name    = var.cluster_rke2_hardened_name
+    cluster_rke2_hardened_name    = var.cluster_rke2_hardened_name
     docker_version_agent = var.docker_version_agent
     docker_root          = var.docker_root
     rancher_version      = var.rancher_version
@@ -295,7 +295,7 @@ resource "digitalocean_droplet" "rancheragent-rke2-hardened-master" {
   size       = var.master_size
   user_data = templatefile("files/userdata_rke2_hardened_agent", {
     admin_password       = var.admin_password
-    cluster_rke2_name    = var.cluster_rke2_hardened_name
+    cluster_rke2_hardened_name    = var.cluster_rke2_hardened_name
     docker_version_agent = var.docker_version_agent
     docker_root          = var.docker_root
     rancher_version      = var.rancher_version
@@ -315,7 +315,7 @@ resource "digitalocean_droplet" "rancheragent-rke2-hardened-etcd" {
   size       = var.etcd_size
   user_data = templatefile("files/userdata_rke2_hardened_agent", {
     admin_password       = var.admin_password
-    cluster_rke2_name    = var.cluster_rke2_hardened_name
+    cluster_rke2_hardened_name    = var.cluster_rke2_hardened_name
     docker_version_agent = var.docker_version_agent
     docker_root          = var.docker_root
     rancher_version      = var.rancher_version
@@ -335,7 +335,7 @@ resource "digitalocean_droplet" "rancheragent-rke2-hardened-controlplane" {
   size       = var.controlplane_size
   user_data = templatefile("files/userdata_rke2_hardened_agent", {
     admin_password       = var.admin_password
-    cluster_rke2_name    = var.cluster_rke2_hardened_name
+    cluster_rke2_hardened_name    = var.cluster_rke2_hardened_name
     docker_version_agent = var.docker_version_agent
     docker_root          = var.docker_root
     rancher_version      = var.rancher_version
@@ -355,7 +355,7 @@ resource "digitalocean_droplet" "rancheragent-rke2-hardened-worker" {
   size       = var.worker_size
   user_data = templatefile("files/userdata_rke2_hardened_agent", {
     admin_password       = var.admin_password
-    cluster_rke2_name    = var.cluster_rke2_hardened_name
+    cluster_rke2_hardened_name    = var.cluster_rke2_hardened_name
     docker_version_agent = var.docker_version_agent
     docker_root          = var.docker_root
     rancher_version      = var.rancher_version
