@@ -1,9 +1,5 @@
 # 🚀 RKE2 CIS Hardened Clusters  
 ### What, Why, and How We Did It
-
-**Author:** [Pablo Diaz]  
-**Date:** [July 24]
-
 ---
 
 # 🔐 Why Harden a Cluster?
