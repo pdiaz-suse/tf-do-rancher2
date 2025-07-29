@@ -15,3 +15,5 @@
 # example.tfvars
 terraform.tfvars
 ssh_config
+
+.DS_Store
